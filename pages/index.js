@@ -42,7 +42,6 @@ export default function Home() {
     }
 
     formData.append('upload_preset', 'my-uploads')
-    console.log(formData)
     // Actual request to API cloudinary
     const data = await fetch(
       'https://api.cloudinary.com/v1_1/neil2023/image/upload',

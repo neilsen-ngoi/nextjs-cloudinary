@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Head from 'next/head'
+import Image from 'next/image'
 import styles from '../styles/Home.module.scss'
 
 export default function Home() {
@@ -33,19 +34,29 @@ export default function Home() {
     const fileInput = Array.from(form.elements).find(
       ({ name }) => name === 'file'
     )
+    console.log(fileInput)
     const formData = new FormData()
 
     for (const file of fileInput.files) {
       formData.append('file', file)
     }
+
+    formData.append('upload_preset', 'my-uploads')
+    console.log(formData)
+    // Actual request to API cloudinary
     const data = await fetch(
-      'https://api.cloudinary.com/v1_1/demo/image/upload',
+      'https://api.cloudinary.com/v1_1/neil2023/image/upload',
       {
         method: 'POST',
         body: formData,
       }
+      // r for response
     ).then((r) => r.json())
 
+    // confirm upload
+
+    setImageSrc(data.secure_url)
+    setUploadData(data)
     console.log('data', data)
   }
 
@@ -72,7 +83,9 @@ export default function Home() {
             <input type="file" name="file" />
           </p>
 
-          <img src={imageSrc} />
+          {/* <img src={imageSrc} /> */}
+
+          <Image src={imageSrc} alt="upload" width={500} height={500} />
 
           {imageSrc && !uploadData && (
             <p>
